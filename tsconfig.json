@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "esnext",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "rootDirs": ["src", "build/dev/javascript/ffig"],
+    "moduleResolution": "bundler"
+  },
+  "include": ["src/**/*"]
+}
