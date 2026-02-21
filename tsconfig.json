@@ -4,8 +4,8 @@
     "module": "esnext",
     "skipLibCheck": true,
     "baseUrl": ".",
-    "rootDirs": ["src", "build/dev/javascript/ffig"],
+    "rootDirs": ["src", "dev", "test", "build/dev/javascript/ffig"],
     "moduleResolution": "bundler"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "build/dev/javascript/**/*"]
 }
