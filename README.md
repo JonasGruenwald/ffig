@@ -1,5 +1,8 @@
 # `ffig` – Generate Gleam Externals from Typescript
 
+> [!CAUTION]
+> This is a work in progress, especially the parsing of typescript files and types is not stable yet
+
 ## Usage
 
 1. Set up your project with a `tsconfig.json`
