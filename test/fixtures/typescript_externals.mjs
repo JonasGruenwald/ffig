@@ -39,3 +39,24 @@ export function setAndGetString(input) {
 export function getPromise() {
     return Promise.resolve("wobble");
 }
+export function getVoidPromise() {
+    return Promise.resolve();
+}
+class MyClass {
+}
+export function getClass() {
+    return new MyClass();
+}
+export function getTuple() {
+    return ["woble", 321, false];
+}
+export function getArray(length) {
+    const output = [];
+    for (let i = 0; i < length; i++) {
+        output.push(i);
+    }
+    return output;
+}
+export function getUnion() {
+    return 1;
+}

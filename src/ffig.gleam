@@ -1,3 +1,4 @@
+import argv
 import filepath
 import gleam/io
 import gleam/javascript/array.{type Array}
@@ -6,11 +7,13 @@ import gleam/result
 import gleam/set.{type Set}
 import gleam/string
 import justin
+import simplifile
 
 @internal
 pub type ExecutionError {
   NoConfigFile
   SourceFileNotFound
+  FailedToWriteOutput(error: simplifile.FileError)
 }
 
 @internal
@@ -63,7 +66,60 @@ pub type GeneratedModule {
 }
 
 pub fn main() -> Nil {
-  io.println("Hello from ffig!")
+  let argv.Argv(arguments:, ..) = argv.load()
+
+  case arguments {
+    [target_file, output_name] -> {
+      case run(target_file, output_name) {
+        Ok(module) -> {
+          io.println(
+            "✨ Generated "
+            <> filepath.join(module.directory, module.output_filename),
+          )
+          exit(0)
+        }
+        Error(NoConfigFile) -> {
+          io.println(
+            "Error resolving typescript config, make sure you have a tsconfig.json in the current directory",
+          )
+          exit(1)
+        }
+        Error(SourceFileNotFound) -> {
+          io.println(
+            "Error loading source file, make sure " <> target_file <> " exists!",
+          )
+          exit(1)
+        }
+        Error(FailedToWriteOutput(error)) -> {
+          io.println(
+            "Error writing output file: " <> simplifile.describe_error(error),
+          )
+        }
+      }
+    }
+    _ -> {
+      io.println("Usage:\n")
+      io.println(
+        "gleam run -m ffig ./path/to/external_file.mts output_module_name\n",
+      )
+      exit(1)
+    }
+  }
+}
+
+fn run(
+  target_file: String,
+  output_name: String,
+) -> Result(GeneratedModule, ExecutionError) {
+  use external_functions <- result.try(resolve_external_functions(target_file))
+  let module = generate_module(target_file, output_name, external_functions)
+  let output = module_to_string(module)
+  let output_file_path = filepath.join(module.directory, module.output_filename)
+
+  case simplifile.write(output_file_path, output) {
+    Ok(_) -> Ok(module)
+    Error(error) -> Error(FailedToWriteOutput(error))
+  }
 }
 
 @internal
@@ -110,7 +166,7 @@ pub fn generate_module(
   external_file_path: String,
   target_file_name: String,
   functions_array: Array(ExternalFunction),
-) {
+) -> GeneratedModule {
   let external_file_name = filepath.base_name(external_file_path)
   let external_file_extension =
     filepath.extension(external_file_name) |> result.unwrap("")
@@ -205,7 +261,7 @@ pub fn generate_module(
   )
 }
 
-fn expand_types(input: List(Type), accumulator: List(Type)) {
+fn expand_types(input: List(Type), accumulator: List(Type)) -> List(Type) {
   case input {
     [] -> accumulator
     [current, ..rest] -> {
@@ -233,7 +289,7 @@ fn expand_types(input: List(Type), accumulator: List(Type)) {
   }
 }
 
-fn build_external_attribute(external_file_name: String, name: String) {
+fn build_external_attribute(external_file_name: String, name: String) -> String {
   "@external(javascript, \"./"
   <> external_file_name
   <> "\", \""
@@ -260,13 +316,16 @@ fn build_type_definition(input: Type) -> String {
     GleamCustomType(module_path:, name:, type_arguments:) -> {
       let module_name = module_name(module_path)
       let arguments = array.to_list(type_arguments)
+      let prefix = case module_name {
+        "" -> ""
+        module_name -> module_name <> "."
+      }
       case arguments {
         [] -> {
-          module_name <> "." <> name
+          prefix <> name
         }
         arguments -> {
-          module_name
-          <> "."
+          prefix
           <> name
           <> "("
           <> list.map(arguments, build_type_definition) |> string.join(", ")
@@ -278,7 +337,7 @@ fn build_type_definition(input: Type) -> String {
   }
 }
 
-fn module_name(module_path: String) {
+fn module_name(module_path: String) -> String {
   let parts =
     string.split(module_path, "/")
     |> list.reverse()
@@ -294,3 +353,6 @@ fn module_name(module_path: String) {
 pub fn resolve_external_functions(
   file_path: String,
 ) -> Result(Array(ExternalFunction), ExecutionError)
+
+@external(javascript, "./ffig_ffi.mjs", "exit")
+fn exit(exit_code: Int) -> Nil

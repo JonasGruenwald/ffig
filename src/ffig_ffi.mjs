@@ -145,3 +145,6 @@ export const resolve_external_functions = (filepath) => {
     });
     return Result$Ok(results);
 };
+export const exit = (code) => {
+    process.exit(code);
+};

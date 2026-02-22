@@ -18,6 +18,7 @@ import {
   Type$OpaqueExternal,
 } from "./ffig.mjs";
 import { Result$Ok, Result$Error, type Result } from "./gleam.mjs";
+import { writeFileSync } from "node:fs";
 
 const GLEAM_BUILD_ENTRY = "/build/dev/javascript/";
 
@@ -231,4 +232,8 @@ export const resolve_external_functions = (
   });
 
   return Result$Ok(results);
+};
+
+export const exit = (code: number) => {
+  process.exit(code);
 };

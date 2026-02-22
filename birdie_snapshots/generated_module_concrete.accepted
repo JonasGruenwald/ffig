@@ -44,7 +44,7 @@ pub fn set_and_get_bool(input: Bool) -> Bool
 pub fn set_and_get_number(input: Float) -> Float
 
 @external(javascript, "././typescript_externals.mjs", "getGleamResult")
-pub fn get_gleam_result() -> .Result(String, String)
+pub fn get_gleam_result() -> Result(String, String)
 
 @external(javascript, "././typescript_externals.mjs", "getGenericGleamTypeNumber")
 pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType
