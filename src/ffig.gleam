@@ -172,8 +172,7 @@ pub fn generate_module(
     filepath.extension(external_file_name) |> result.unwrap("")
   let external_file_name_without_extension =
     string.replace(external_file_name, "." <> external_file_extension, "")
-  let external_target_file_name =
-    external_file_name_without_extension <> ".mjs"
+  let external_target_file_name = external_file_name_without_extension <> ".mjs"
 
   let external_file_directory = filepath.directory_name(external_file_path)
   let output_filename = target_file_name <> ".gleam"

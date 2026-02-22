@@ -7,10 +7,10 @@ pub fn arrow_function_test() {
   assert generated_module.exported_arrow_function() == 42.0
 }
 
-pub fn bool_test(){
+pub fn bool_test() {
   assert generated_module.set_and_get_bool(True) == True
 }
 
-pub fn string_test(){
+pub fn string_test() {
   assert generated_module.set_and_get_string("Hello Joe!") == "Hello Joe!"
 }
