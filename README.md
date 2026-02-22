@@ -166,11 +166,28 @@ pub type MyJavaScriptType
 pub fn get_my_type() -> MyJavaScriptType
 ```
 
+### Undefined
+
+The JS value `undefined` maps directly to Gleam's `Nil`
+
+`wobble_ffi.mts`
+
+```ts
+export const returnUndefined = (): undefined => undefined;
+```
+
+`wobble.gleam`
+
+```gleam
+@external(javascript, "./typescript_externals.mjs", "returnUndefined")
+pub fn return_undefined() -> Nil
+```
+
 ### And the Rest
 
-For typescript types that can't otherwise be represented in Gleam, such as unions, intersections and null, `ffig` will set the type to dynamic. You can then decode them on the Gleam side if desired.
+For typescript types that can't otherwise be represented in Gleam, such as unions, intersections and `null`, `ffig` will set the type to dynamic. You can then decode them on the Gleam side if desired.
 
-The same is done for the `any` type from typescript, so if you explicitly want something to be generated as dynamic in Gleam, you can just set the type to `any` on the typescript side.
+The same is done for the `any` and `unknown` type from typescript, so if you explicitly want something to be generated as dynamic in Gleam, you can just set the type to `unknown` on the typescript side, essentially discarding available type information instead of exposing it to Gleam.
 
 `wobble_ffi.mts`
 

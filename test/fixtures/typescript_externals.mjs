@@ -90,3 +90,4 @@ export function returnAny() { }
 export function returnObject() {
     return Object.create(null);
 }
+export const returnUndefined = () => undefined;

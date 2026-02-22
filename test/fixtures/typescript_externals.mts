@@ -134,3 +134,5 @@ export function returnAny(): any {}
 export function returnObject(): Object {
   return Object.create(null);
 }
+
+export const returnUndefined = (): undefined => undefined;

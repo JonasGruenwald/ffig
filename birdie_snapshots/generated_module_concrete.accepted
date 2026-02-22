@@ -14,11 +14,13 @@ import gleam/javascript/array
 import gleam/javascript/promise
 import gleam/dynamic
 
-pub type Unknown
 pub type MyJavaScriptType
 pub type Object
 pub type Never
 pub type MyClass
+
+@external(javascript, "./typescript_externals.mjs", "returnUndefined")
+pub fn return_undefined() -> Nil
 
 @external(javascript, "./typescript_externals.mjs", "returnObject")
 pub fn return_object() -> Object
@@ -31,7 +33,7 @@ pub fn return_any() -> dynamic.Dynamic
 pub fn documented_function() -> String
 
 @external(javascript, "./typescript_externals.mjs", "returnUnknown")
-pub fn return_unknown() -> Unknown
+pub fn return_unknown() -> dynamic.Dynamic
 
 @external(javascript, "./typescript_externals.mjs", "neverReturn")
 pub fn never_return() -> Never
