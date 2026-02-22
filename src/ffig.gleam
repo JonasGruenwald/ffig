@@ -95,8 +95,8 @@ pub fn main() -> Nil {
 
 fn run_all() {
   use src_files <- result.try(simplifile.get_files("src"))
-  use dev_files <- result.try(simplifile.get_files("dev"))
-  use test_files <- result.try(simplifile.get_files("test"))
+  let dev_files = result.unwrap(simplifile.get_files("dev"), [])
+  let test_files = result.unwrap(simplifile.get_files("test"), [])
 
   src_files
   |> list.append(dev_files)
@@ -452,7 +452,7 @@ fn format_parameter_name(name) {
   }
 }
 
-fn format_type_name(name){
+fn format_type_name(name) {
   justin.pascal_case(name)
 }
 
