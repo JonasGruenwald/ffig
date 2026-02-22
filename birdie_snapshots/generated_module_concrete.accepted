@@ -47,10 +47,10 @@ pub fn set_and_get_number(input: Float) -> Float
 pub fn get_gleam_result() -> Result(String, String)
 
 @external(javascript, "././typescript_externals.mjs", "getGenericGleamTypeNumber")
-pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType
+pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType(Float)
 
 @external(javascript, "././typescript_externals.mjs", "getGenericGleamTypeString")
-pub fn get_generic_gleam_type_string(input: String) -> gleam_types.GenericType
+pub fn get_generic_gleam_type_string(input: String) -> gleam_types.GenericType(String)
 
 @external(javascript, "././typescript_externals.mjs", "getComplexGleamType")
 pub fn get_complex_gleam_type(input: String) -> gleam_types.ComplexType

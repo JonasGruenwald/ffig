@@ -43,11 +43,9 @@ const resolve_type = (
     ts.TypeFormatFlags.NoTruncation,
   );
   const type_ref = type as ts.TypeReference;
-  const type_arguments = type_ref.typeArguments
-    ? type_ref.typeArguments.map((t) =>
-        resolve_type(t, typeChecker, currentFile),
-      )
-    : [];
+  const type_arguments = [
+    ...(type_ref.typeArguments ?? type.aliasTypeArguments ?? []),
+  ].map((t) => resolve_type(t, typeChecker, currentFile));
   const symbol = type.getSymbol() || type.aliasSymbol;
   // Check if this is a Gleam custom type
   if (symbol && symbol.declarations && symbol.declarations.length > 0) {

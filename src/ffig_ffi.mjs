@@ -12,9 +12,9 @@ const format_type_name = (input) => input.split("<")[0].replace("$", "");
 const resolve_type = (type, typeChecker, currentFile) => {
     const type_string = typeChecker.typeToString(type, undefined, ts.TypeFormatFlags.NoTruncation);
     const type_ref = type;
-    const type_arguments = type_ref.typeArguments
-        ? type_ref.typeArguments.map((t) => resolve_type(t, typeChecker, currentFile))
-        : [];
+    const type_arguments = [
+        ...(type_ref.typeArguments ?? type.aliasTypeArguments ?? []),
+    ].map((t) => resolve_type(t, typeChecker, currentFile));
     const symbol = type.getSymbol() || type.aliasSymbol;
     // Check if this is a Gleam custom type
     if (symbol && symbol.declarations && symbol.declarations.length > 0) {
