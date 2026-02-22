@@ -1,13 +1,7 @@
----
-version: 1.5.4
-title: generated_module_concrete
-file: ./test/ffig_test.gleam
-test_name: module_to_string_test
----
 //// This module contains bindings to the external functions defined in
 //// `test/fixtures/typescript_externals.mts`  
 //// > This module was generated automatically by **ffig**, do not edit it manually!  
-//// > To re-generate, run `gleam run -m ffig test/fixtures/typescript_externals.mts typescript_externals_bindings`
+//// > To re-generate, run `gleam run -m ffig test/fixtures/typescript_externals.mts generated_module`
 
 import fixtures/gleam_types
 import gleam/javascript/array

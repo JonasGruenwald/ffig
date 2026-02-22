@@ -150,10 +150,53 @@ export const resolve_external_functions = (
   const results: ExternalFunction$[] = [];
 
   ts.forEachChild(source_file, (node) => {
+    // Re-exported declarations (e.g., export { fn as alias })
+    if (
+      ts.isExportDeclaration(node) &&
+      node.exportClause &&
+      ts.isNamedExports(node.exportClause)
+    ) {
+      node.exportClause.elements.forEach((specifier) => {
+        const local_name = specifier.propertyName ?? specifier.name;
+        const exported_name = specifier.name;
+        const symbol = type_checker.getSymbolAtLocation(local_name);
+        if (symbol) {
+          const type = type_checker.getTypeOfSymbolAtLocation(
+            symbol,
+            local_name,
+          );
+          const signatures = type.getCallSignatures();
+          if (signatures.length > 0) {
+            const signature = signatures[0];
+            const parameters = signature.getParameters().map((param) => {
+              const param_type = type_checker.getTypeOfSymbolAtLocation(
+                param,
+                local_name,
+              );
+              return Parameter$Parameter(
+                param.getName(),
+                resolve_type(param_type, type_checker, filepath),
+              );
+            });
+            const return_type = signature.getReturnType();
+            results.push(
+              ExternalFunction$ExternalFunction(
+                exported_name.text,
+                parameters,
+                resolve_type(return_type, type_checker, filepath),
+              ),
+            );
+          }
+        }
+      });
+      return;
+    }
+
     const is_exported =
       (ts.getCombinedModifierFlags(node as ts.Declaration) &
         ts.ModifierFlags.Export) !==
       0;
+
     if (!is_exported) return;
 
     // Exported function declarations (e.g. export function wobble(){})

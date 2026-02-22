@@ -60,3 +60,9 @@ export function getArray(length) {
 export function getUnion() {
     return 1;
 }
+// deliberately using snake_case here to make sure it gets handled right
+export const exported_arrow_function = () => 42;
+const wobble = (input) => {
+    return Promise.resolve("Hello");
+};
+export { wobble as declaredAndLaterExported };

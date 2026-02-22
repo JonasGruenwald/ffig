@@ -47,7 +47,7 @@ export function setAndGetBool(input: boolean) {
   return input;
 }
 
-export function setAndGetString(input: boolean) {
+export function setAndGetString(input: string) {
   return input;
 }
 
@@ -80,3 +80,12 @@ export function getArray(length: number) {
 export function getUnion(): boolean | string | number {
   return 1;
 }
+
+// deliberately using snake_case here to make sure it gets handled right
+export const exported_arrow_function = () => 42;
+
+const wobble = (input: boolean) => {
+  return Promise.resolve("Hello");
+};
+
+export { wobble as declaredAndLaterExported };

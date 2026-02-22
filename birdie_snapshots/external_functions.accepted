@@ -62,8 +62,8 @@ test_name: resolve_external_functions_test
   ),
   ExternalFunction(
     "setAndGetString",
-    #(Parameter("input", GleamBool)),
-    GleamBool,
+    #(Parameter("input", GleamString)),
+    GleamString,
   ),
   ExternalFunction(
     "getPromise",
@@ -98,5 +98,15 @@ test_name: resolve_external_functions_test
     "getUnion",
     #(),
     GleamDynamic,
+  ),
+  ExternalFunction(
+    "exported_arrow_function",
+    #(),
+    GleamFloat,
+  ),
+  ExternalFunction(
+    "declaredAndLaterExported",
+    #(Parameter("input", GleamBool)),
+    JavaScriptPromise(GleamString),
   ),
 )

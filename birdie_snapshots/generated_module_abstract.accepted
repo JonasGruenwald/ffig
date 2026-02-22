@@ -15,6 +15,10 @@ GeneratedModule(
     #("MyClass", Nil),
   ])),
   [
+    "@external(javascript, "./typescript_externals.mjs", "declaredAndLaterExported")
+pub fn declared_and_later_exported(input: Bool) -> promise.Promise(String)",
+    "@external(javascript, "./typescript_externals.mjs", "exported_arrow_function")
+pub fn exported_arrow_function() -> Float",
     "@external(javascript, "./typescript_externals.mjs", "getUnion")
 pub fn get_union() -> dynamic.Dynamic",
     "@external(javascript, "./typescript_externals.mjs", "getArray")
@@ -28,7 +32,7 @@ pub fn get_void_promise() -> promise.Promise(Nil)",
     "@external(javascript, "./typescript_externals.mjs", "getPromise")
 pub fn get_promise() -> promise.Promise(String)",
     "@external(javascript, "./typescript_externals.mjs", "setAndGetString")
-pub fn set_and_get_string(input: Bool) -> Bool",
+pub fn set_and_get_string(input: String) -> String",
     "@external(javascript, "./typescript_externals.mjs", "setAndGetBool")
 pub fn set_and_get_bool(input: Bool) -> Bool",
     "@external(javascript, "./typescript_externals.mjs", "setAndGetNumber")
