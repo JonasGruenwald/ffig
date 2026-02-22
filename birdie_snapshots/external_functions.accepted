@@ -13,6 +13,7 @@ test_name: resolve_external_functions_test
       "SimpleType",
       #(),
     ),
+    Error(Nil),
   ),
   ExternalFunction(
     "getComplexGleamType",
@@ -22,6 +23,7 @@ test_name: resolve_external_functions_test
       "ComplexType",
       #(),
     ),
+    Error(Nil),
   ),
   ExternalFunction(
     "getGenericGleamTypeString",
@@ -31,6 +33,7 @@ test_name: resolve_external_functions_test
       "GenericType",
       #(GleamString),
     ),
+    Error(Nil),
   ),
   ExternalFunction(
     "getGenericGleamTypeNumber",
@@ -40,6 +43,7 @@ test_name: resolve_external_functions_test
       "GenericType",
       #(GleamFloat),
     ),
+    Error(Nil),
   ),
   ExternalFunction(
     "getGleamResult",
@@ -49,36 +53,43 @@ test_name: resolve_external_functions_test
       "Result",
       #(GleamString, GleamString),
     ),
+    Error(Nil),
   ),
   ExternalFunction(
     "setAndGetNumber",
     #(Parameter("input", GleamFloat)),
     GleamFloat,
+    Error(Nil),
   ),
   ExternalFunction(
     "setAndGetBool",
     #(Parameter("input", GleamBool)),
     GleamBool,
+    Error(Nil),
   ),
   ExternalFunction(
     "setAndGetString",
     #(Parameter("input", GleamString)),
     GleamString,
+    Error(Nil),
   ),
   ExternalFunction(
     "getPromise",
     #(),
     JavaScriptPromise(GleamString),
+    Error(Nil),
   ),
   ExternalFunction(
     "getVoidPromise",
     #(),
     JavaScriptPromise(GleamNil),
+    Error(Nil),
   ),
   ExternalFunction(
     "getClass",
     #(),
     OpaqueExternal("MyClass"),
+    Error(Nil),
   ),
   ExternalFunction(
     "getTuple",
@@ -88,31 +99,37 @@ test_name: resolve_external_functions_test
       GleamFloat,
       GleamBool,
     )),
+    Error(Nil),
   ),
   ExternalFunction(
     "getArray",
     #(Parameter("length", GleamFloat)),
     JavaScriptArray(GleamFloat),
+    Error(Nil),
   ),
   ExternalFunction(
     "getUnion",
     #(),
     GleamDynamic,
+    Error(Nil),
   ),
   ExternalFunction(
     "exported_arrow_function",
     #(),
     GleamFloat,
+    Error(Nil),
   ),
   ExternalFunction(
     "declaredAndLaterExported",
     #(Parameter("input", GleamBool)),
     JavaScriptPromise(GleamString),
+    Error(Nil),
   ),
   ExternalFunction(
     "numberToString",
     #(Parameter("input", GleamFloat)),
     GleamString,
+    Error(Nil),
   ),
   ExternalFunction(
     "shuffleMyTuple",
@@ -131,6 +148,7 @@ test_name: resolve_external_functions_test
       GleamString,
       GleamFloat,
     )),
+    Error(Nil),
   ),
   ExternalFunction(
     "returnMyResult",
@@ -140,30 +158,42 @@ test_name: resolve_external_functions_test
       "Result",
       #(GleamString, GleamString),
     ),
+    Error(Nil),
   ),
   ExternalFunction(
     "iPromiseYouAnArray",
     #(),
     JavaScriptPromise(JavaScriptArray(GleamFloat)),
+    Error(Nil),
   ),
   ExternalFunction(
     "getMyType",
     #(),
     OpaqueExternal("MyJavaScriptType"),
+    Error(Nil),
   ),
   ExternalFunction(
     "whatWillItBe",
     #(),
     GleamDynamic,
+    Error(Nil),
   ),
   ExternalFunction(
     "neverReturn",
     #(),
     OpaqueExternal("never"),
+    Error(Nil),
   ),
   ExternalFunction(
     "returnUnknown",
     #(),
     OpaqueExternal("unknown"),
+    Error(Nil),
+  ),
+  ExternalFunction(
+    "documentedFunction",
+    #(),
+    GleamString,
+    Ok("This function has some jsdoc documentation"),
   ),
 )

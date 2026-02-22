@@ -74,3 +74,15 @@ export const getMyType = () => ({
     name: "wibble",
 });
 export const whatWillItBe = () => "I don't know";
+export const neverReturn = () => {
+    process.exit();
+};
+export const returnUnknown = () => {
+    return "?";
+};
+/**
+ * This function has some jsdoc documentation
+ */
+export function documentedFunction() {
+    return "Hello Joe!";
+}

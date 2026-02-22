@@ -22,6 +22,15 @@ import { Result$Ok, Result$Error, type Result } from "./gleam.mjs";
 
 const GLEAM_BUILD_ENTRY = "/build/dev/javascript/";
 
+const get_documentation = (
+  symbol: ts.Symbol,
+  typeChecker: ts.TypeChecker,
+): Result<string, undefined> => {
+  const parts = symbol.getDocumentationComment(typeChecker);
+  const doc = ts.displayPartsToString(parts).trim();
+  return doc.length > 0 ? Result$Ok(doc) : Result$Error(undefined);
+};
+
 const format_module_path = (input: string) => {
   const parts = input.split(GLEAM_BUILD_ENTRY);
   const after_entry = parts[parts.length - 1].replace(".d.mts", "");
@@ -184,6 +193,7 @@ export const resolve_external_functions = (
                 exported_name.text,
                 parameters,
                 resolve_type(return_type, type_checker, filepath),
+                get_documentation(symbol, type_checker),
               ),
             );
           }
@@ -215,12 +225,16 @@ export const resolve_external_functions = (
         });
 
         const return_type = signature.getReturnType();
+        const fn_symbol = type_checker.getSymbolAtLocation(node.name);
 
         results.push(
           ExternalFunction$ExternalFunction(
             node.name.text,
             parameters,
             resolve_type(return_type, type_checker, filepath),
+            fn_symbol
+              ? get_documentation(fn_symbol, type_checker)
+              : Result$Error(undefined),
           ),
         );
       }
@@ -263,6 +277,7 @@ export const resolve_external_functions = (
                   declaration.name.text,
                   parameters,
                   resolve_type(return_type, type_checker, filepath),
+                  get_documentation(symbol, type_checker),
                 ),
               );
             }

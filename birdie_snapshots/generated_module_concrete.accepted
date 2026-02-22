@@ -19,6 +19,10 @@ pub type MyJavaScriptType
 pub type Never
 pub type MyClass
 
+/// This function has some jsdoc documentation
+@external(javascript, "./typescript_externals.mjs", "documentedFunction")
+pub fn documented_function() -> String
+
 @external(javascript, "./typescript_externals.mjs", "returnUnknown")
 pub fn return_unknown() -> Unknown
 

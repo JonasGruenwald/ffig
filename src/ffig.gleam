@@ -46,6 +46,7 @@ pub type ExternalFunction {
     name: String,
     parameters: Array(Parameter),
     return_type: Type,
+    documentation: Result(String, Nil),
   )
 }
 
@@ -324,7 +325,17 @@ pub fn generate_module(
         <> ") -> "
         <> return_definition
 
-      let external_function = external_definition <> "\n" <> function_definition
+      let doc_comment = case current.documentation {
+        Ok(doc) ->
+          doc
+          |> string.split("\n")
+          |> list.map(fn(line) { "/// " <> string.trim(line) })
+          |> string.join("\n")
+          <> "\n"
+        Error(Nil) -> ""
+      }
+      let external_function =
+        doc_comment <> external_definition <> "\n" <> function_definition
 
       GeneratedModule(
         ..module,

@@ -18,6 +18,9 @@ GeneratedModule(
     #("unknown", Nil),
   ])),
   [
+    "/// This function has some jsdoc documentation
+@external(javascript, "./typescript_externals.mjs", "documentedFunction")
+pub fn documented_function() -> String",
     "@external(javascript, "./typescript_externals.mjs", "returnUnknown")
 pub fn return_unknown() -> Unknown",
     "@external(javascript, "./typescript_externals.mjs", "neverReturn")

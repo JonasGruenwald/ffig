@@ -121,3 +121,10 @@ export const neverReturn = (): never => {
 export const returnUnknown = (): unknown => {
   return "?";
 };
+
+/**
+ * This function has some jsdoc documentation
+ */
+export function documentedFunction() {
+  return "Hello Joe!";
+}
