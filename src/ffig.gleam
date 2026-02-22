@@ -192,7 +192,7 @@ fn write_output(module, output_file_path, output) {
 fn is_generated_file(content: String) {
   let parts = string.split(content, "\n")
   case parts {
-    [_, _, clue_line] -> {
+    [_, _, clue_line, ..] -> {
       string.contains(clue_line, module_clue)
     }
     _ -> False

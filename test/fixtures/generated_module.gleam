@@ -4,11 +4,38 @@
 //// > To re-generate, run `gleam run -m ffig test/fixtures/typescript_externals.mts generated_module`
 
 import fixtures/gleam_types
-import gleam/dynamic
 import gleam/javascript/array
 import gleam/javascript/promise
+import gleam/dynamic
 
+pub type Unknown
+pub type MyJavaScriptType
+pub type Never
 pub type MyClass
+
+@external(javascript, "./typescript_externals.mjs", "returnUnknown")
+pub fn return_unknown() -> Unknown
+
+@external(javascript, "./typescript_externals.mjs", "neverReturn")
+pub fn never_return() -> Never
+
+@external(javascript, "./typescript_externals.mjs", "whatWillItBe")
+pub fn what_will_it_be() -> dynamic.Dynamic
+
+@external(javascript, "./typescript_externals.mjs", "getMyType")
+pub fn get_my_type() -> MyJavaScriptType
+
+@external(javascript, "./typescript_externals.mjs", "iPromiseYouAnArray")
+pub fn i_promise_you_an_array() -> promise.Promise(array.Array(Float))
+
+@external(javascript, "./typescript_externals.mjs", "returnMyResult")
+pub fn return_my_result() -> Result(String, String)
+
+@external(javascript, "./typescript_externals.mjs", "shuffleMyTuple")
+pub fn shuffle_my_tuple(arg_0: #(Float, String, Bool)) -> #(Bool, String, Float)
+
+@external(javascript, "./typescript_externals.mjs", "numberToString")
+pub fn number_to_string(input: Float) -> String
 
 @external(javascript, "./typescript_externals.mjs", "declaredAndLaterExported")
 pub fn declared_and_later_exported(input: Bool) -> promise.Promise(String)
@@ -47,14 +74,10 @@ pub fn set_and_get_number(input: Float) -> Float
 pub fn get_gleam_result() -> Result(String, String)
 
 @external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeNumber")
-pub fn get_generic_gleam_type_number(
-  input: Float,
-) -> gleam_types.GenericType(Float)
+pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType(Float)
 
 @external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeString")
-pub fn get_generic_gleam_type_string(
-  input: String,
-) -> gleam_types.GenericType(String)
+pub fn get_generic_gleam_type_string(input: String) -> gleam_types.GenericType(String)
 
 @external(javascript, "./typescript_externals.mjs", "getComplexGleamType")
 pub fn get_complex_gleam_type(input: String) -> gleam_types.ComplexType
