@@ -143,7 +143,7 @@ pub fn i_promise_you_an_array() -> promise.Promise(array.Array(Float))
 
 ### External Types
 
-It's common practice to declare external types that can't be represented in Gleam and should only be used via FFI as types without any constructors. `ffig` will add such types to the module it generates for typed JS objects and classes.
+It's common practice to declare external types that can't be represented in Gleam and should only be used via FFI as types without any constructors. `ffig` will add such types to the module when it encounters typed JS objects and classes.
 
 `wobble_ffi.mts`
 
