@@ -19,6 +19,18 @@ import {
 } from "./ffig.mjs";
 import { Result$Ok, Result$Error, type Result } from "./gleam.mjs";
 
+const GLEAM_BUILD_ENTRY = "/build/dev/javascript/";
+
+const format_module_path = (input: string) => {
+  const parts = input.split(GLEAM_BUILD_ENTRY);
+  const after_entry = parts[parts.length - 1].replace(".d.mts", "");
+  // remove the module folder name itself from the path
+  return after_entry.split("/").slice(1).join("/");
+};
+
+const format_type_name = (input: string) =>
+  input.split("<")[0].replace("$", "");
+
 const resolve_type = (
   type: ts.Type,
   typeChecker: ts.TypeChecker,
@@ -32,8 +44,8 @@ const resolve_type = (
   const type_ref = type as ts.TypeReference;
   const type_arguments = type_ref.typeArguments
     ? type_ref.typeArguments.map((t) =>
-      resolve_type(t, typeChecker, currentFile),
-    )
+        resolve_type(t, typeChecker, currentFile),
+      )
     : [];
   const symbol = type.getSymbol() || type.aliasSymbol;
   // Check if this is a Gleam custom type
@@ -43,11 +55,11 @@ const resolve_type = (
     if (
       sourceFile &&
       sourceFile.fileName &&
-      sourceFile.fileName.includes("/build/dev/javascript/")
+      sourceFile.fileName.includes(GLEAM_BUILD_ENTRY)
     ) {
       return Type$GleamCustomType(
-        sourceFile.fileName,
-        type_string,
+        format_module_path(sourceFile.fileName),
+        format_type_name(type_string),
         type_arguments,
       );
     }
@@ -91,15 +103,14 @@ const resolve_type = (
       }
     } else if (objectType.objectFlags & ts.ObjectFlags.Reference) {
       if (type_string.startsWith("Promise<") && type_arguments.length === 1) {
-        return Type$JavaScriptPromise(type_arguments[0])
+        return Type$JavaScriptPromise(type_arguments[0]);
       }
     }
   }
-  return Type$OpaqueExternal(type_string)
-
+  return Type$OpaqueExternal(type_string);
 };
 
-export const resolve_external_types = (
+export const resolve_external_functions = (
   filepath: string,
 ): Result<Array<ExternalFunction$>, ExecutionError$> => {
   const configPath = ts.findConfigFile(

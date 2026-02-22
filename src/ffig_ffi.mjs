@@ -1,6 +1,14 @@
 import ts from "typescript";
 import { ExecutionError$NoConfigFile, Parameter$Parameter, ExternalFunction$ExternalFunction, Type$GleamString, Type$GleamFloat, Type$GleamBool, Type$GleamNil, Type$GleamTuple, Type$GleamDynamic, Type$JavaScriptArray, Type$GleamCustomType, Type$JavaScriptPromise, Type$OpaqueExternal, } from "./ffig.mjs";
 import { Result$Ok, Result$Error } from "./gleam.mjs";
+const GLEAM_BUILD_ENTRY = "/build/dev/javascript/";
+const format_module_path = (input) => {
+    const parts = input.split(GLEAM_BUILD_ENTRY);
+    const after_entry = parts[parts.length - 1].replace(".d.mts", "");
+    // remove the module folder name itself from the path
+    return after_entry.split("/").slice(1).join("/");
+};
+const format_type_name = (input) => input.split("<")[0].replace("$", "");
 const resolve_type = (type, typeChecker, currentFile) => {
     const type_string = typeChecker.typeToString(type, undefined, ts.TypeFormatFlags.NoTruncation);
     const type_ref = type;
@@ -14,8 +22,8 @@ const resolve_type = (type, typeChecker, currentFile) => {
         const sourceFile = declaration.getSourceFile();
         if (sourceFile &&
             sourceFile.fileName &&
-            sourceFile.fileName.includes("/dev/javascript/")) {
-            return Type$GleamCustomType(sourceFile.fileName, type_string, type_arguments);
+            sourceFile.fileName.includes(GLEAM_BUILD_ENTRY)) {
+            return Type$GleamCustomType(format_module_path(sourceFile.fileName), format_type_name(type_string), type_arguments);
         }
     }
     if (type.flags & ts.TypeFlags.String) {
@@ -68,7 +76,7 @@ const resolve_type = (type, typeChecker, currentFile) => {
     }
     return Type$OpaqueExternal(type_string);
 };
-export const resolve_external_types = (filepath) => {
+export const resolve_external_functions = (filepath) => {
     const configPath = ts.findConfigFile(process.cwd(), ts.sys.fileExists, "tsconfig.json");
     if (!configPath) {
         return Result$Error(ExecutionError$NoConfigFile());

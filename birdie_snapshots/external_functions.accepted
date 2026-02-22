@@ -1,0 +1,102 @@
+---
+version: 1.5.4
+title: external_functions
+file: ./test/ffig_test.gleam
+test_name: resolve_external_functions_test
+---
+#(
+  ExternalFunction(
+    "getSimpleGleamType",
+    #(Parameter("target", GleamFloat)),
+    GleamCustomType(
+      "fixtures/gleam_types",
+      "SimpleType",
+      #(),
+    ),
+  ),
+  ExternalFunction(
+    "getComplexGleamType",
+    #(Parameter("input", GleamString)),
+    GleamCustomType(
+      "fixtures/gleam_types",
+      "ComplexType",
+      #(),
+    ),
+  ),
+  ExternalFunction(
+    "getGenericGleamTypeString",
+    #(Parameter("input", GleamString)),
+    GleamCustomType(
+      "fixtures/gleam_types",
+      "GenericType",
+      #(),
+    ),
+  ),
+  ExternalFunction(
+    "getGenericGleamTypeNumber",
+    #(Parameter("input", GleamFloat)),
+    GleamCustomType(
+      "fixtures/gleam_types",
+      "GenericType",
+      #(),
+    ),
+  ),
+  ExternalFunction(
+    "getGleamResult",
+    #(),
+    GleamCustomType(
+      "",
+      "Result",
+      #(GleamString, GleamString),
+    ),
+  ),
+  ExternalFunction(
+    "setAndGetNumber",
+    #(Parameter("input", GleamFloat)),
+    GleamFloat,
+  ),
+  ExternalFunction(
+    "setAndGetBool",
+    #(Parameter("input", GleamBool)),
+    GleamBool,
+  ),
+  ExternalFunction(
+    "setAndGetString",
+    #(Parameter("input", GleamBool)),
+    GleamBool,
+  ),
+  ExternalFunction(
+    "getPromise",
+    #(),
+    JavaScriptPromise(GleamString),
+  ),
+  ExternalFunction(
+    "getVoidPromise",
+    #(),
+    JavaScriptPromise(GleamNil),
+  ),
+  ExternalFunction(
+    "getClass",
+    #(),
+    OpaqueExternal("MyClass"),
+  ),
+  ExternalFunction(
+    "getTuple",
+    #(),
+    GleamTuple(#(
+      GleamString,
+      GleamFloat,
+      GleamBool,
+    )),
+  ),
+  ExternalFunction(
+    "getArray",
+    #(Parameter("length", GleamFloat)),
+    JavaScriptArray(GleamFloat),
+  ),
+  ExternalFunction(
+    "getUnion",
+    #(),
+    GleamDynamic,
+  ),
+)
