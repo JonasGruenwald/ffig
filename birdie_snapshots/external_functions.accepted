@@ -196,4 +196,16 @@ test_name: resolve_external_functions_test
     GleamString,
     Ok("This function has some jsdoc documentation"),
   ),
+  ExternalFunction(
+    "returnAny",
+    #(),
+    GleamDynamic,
+    Error(Nil),
+  ),
+  ExternalFunction(
+    "returnObject",
+    #(),
+    OpaqueExternal("Object"),
+    Error(Nil),
+  ),
 )

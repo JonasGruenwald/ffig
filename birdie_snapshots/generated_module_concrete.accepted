@@ -16,8 +16,15 @@ import gleam/dynamic
 
 pub type Unknown
 pub type MyJavaScriptType
+pub type Object
 pub type Never
 pub type MyClass
+
+@external(javascript, "./typescript_externals.mjs", "returnObject")
+pub fn return_object() -> Object
+
+@external(javascript, "./typescript_externals.mjs", "returnAny")
+pub fn return_any() -> dynamic.Dynamic
 
 /// This function has some jsdoc documentation
 @external(javascript, "./typescript_externals.mjs", "documentedFunction")

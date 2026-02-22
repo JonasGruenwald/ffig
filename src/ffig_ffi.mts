@@ -90,6 +90,8 @@ const resolve_type = (
     return Type$GleamDynamic();
   } else if (type.flags & ts.TypeFlags.Intersection) {
     return Type$GleamDynamic();
+  } else if (type.flags & ts.TypeFlags.Any) {
+    return Type$GleamDynamic();
   } else if (type.flags & ts.TypeFlags.Object) {
     const objectType = type as ts.ObjectType;
 
@@ -134,7 +136,7 @@ export const resolve_external_functions = (
   const parsedCommandLine = ts.getParsedCommandLineOfConfigFile(
     configPath,
     {},
-    { 
+    {
       ...ts.sys,
       onUnRecoverableConfigFileDiagnostic: () => {
         // TODO: handle this properly

@@ -86,3 +86,7 @@ export const returnUnknown = () => {
 export function documentedFunction() {
     return "Hello Joe!";
 }
+export function returnAny() { }
+export function returnObject() {
+    return Object.create(null);
+}
