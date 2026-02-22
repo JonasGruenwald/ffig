@@ -225,7 +225,7 @@ pub fn module_to_string(generated_module: GeneratedModule) -> String {
 
   let type_declarations =
     set.fold(generated_module.external_types, "", fn(accumulator, current) {
-      accumulator <> "pub type " <> current <> "\n"
+      accumulator <> "pub type " <> format_type_name(current) <> "\n"
     })
 
   let external_declarations =
@@ -411,7 +411,7 @@ fn build_type_definition(input: Type) -> String {
         }
       }
     }
-    OpaqueExternal(name:) -> name
+    OpaqueExternal(name:) -> format_type_name(name)
   }
 }
 
@@ -450,6 +450,10 @@ fn format_parameter_name(name) {
     }
     _ -> name
   }
+}
+
+fn format_type_name(name){
+  justin.pascal_case(name)
 }
 
 @external(javascript, "./ffig_ffi.mjs", "resolve_external_functions")

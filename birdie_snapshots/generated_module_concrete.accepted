@@ -14,8 +14,16 @@ import gleam/javascript/array
 import gleam/javascript/promise
 import gleam/dynamic
 
-pub type MyClass
+pub type Unknown
 pub type MyJavaScriptType
+pub type Never
+pub type MyClass
+
+@external(javascript, "./typescript_externals.mjs", "returnUnknown")
+pub fn return_unknown() -> Unknown
+
+@external(javascript, "./typescript_externals.mjs", "neverReturn")
+pub fn never_return() -> Never
 
 @external(javascript, "./typescript_externals.mjs", "whatWillItBe")
 pub fn what_will_it_be() -> dynamic.Dynamic

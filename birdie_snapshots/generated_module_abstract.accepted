@@ -14,8 +14,14 @@ GeneratedModule(
   Set(dict.from_list([
     #("MyClass", Nil),
     #("MyJavaScriptType", Nil),
+    #("never", Nil),
+    #("unknown", Nil),
   ])),
   [
+    "@external(javascript, "./typescript_externals.mjs", "returnUnknown")
+pub fn return_unknown() -> Unknown",
+    "@external(javascript, "./typescript_externals.mjs", "neverReturn")
+pub fn never_return() -> Never",
     "@external(javascript, "./typescript_externals.mjs", "whatWillItBe")
 pub fn what_will_it_be() -> dynamic.Dynamic",
     "@external(javascript, "./typescript_externals.mjs", "getMyType")

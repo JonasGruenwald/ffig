@@ -156,4 +156,14 @@ test_name: resolve_external_functions_test
     #(),
     GleamDynamic,
   ),
+  ExternalFunction(
+    "neverReturn",
+    #(),
+    OpaqueExternal("never"),
+  ),
+  ExternalFunction(
+    "returnUnknown",
+    #(),
+    OpaqueExternal("unknown"),
+  ),
 )

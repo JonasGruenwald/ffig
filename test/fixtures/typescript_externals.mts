@@ -113,3 +113,11 @@ export const getMyType = (): MyJavaScriptType => ({
 });
 
 export const whatWillItBe = (): string | boolean | number => "I don't know";
+
+export const neverReturn = (): never => {
+  process.exit();
+};
+
+export const returnUnknown = (): unknown => {
+  return "?";
+};
