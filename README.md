@@ -39,7 +39,13 @@ For a published library the simplest way is likely to include the typescript bui
 
 Create a typescript file with exported functions that you want to generate bindings to, name it something like `wobble_ffi.mts`
 
-Run `ffig` for each typescript file that you want to generate bindings to, it takes two arguments:
+When you run `ffig` without any arguments, it will find all files in `src`, `dev` and `test` ending in `_ffi.mts` and generate bindings for them in a gleam module by the same name without `_ffi`.
+
+```sh
+gleam run -m ffig
+```
+
+You can also run `ffig` manually for each typescript file that you want to generate bindings to, it takes two arguments:
 
 1.  The path to the typescript file, like `src/wobble_ffi.mts`
 2.  The name of the gleam module that should be generated, like `wobble` (without the `.gleam` file extension!)
@@ -147,7 +153,7 @@ type MyJavaScriptType = {
 };
 
 export const getMyType = (): MyJavaScriptType => ({
-  name: "wibble"
+  name: "wibble",
 });
 ```
 

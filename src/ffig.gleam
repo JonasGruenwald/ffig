@@ -12,8 +12,9 @@ import simplifile
 @internal
 pub type ExecutionError {
   NoConfigFile
-  SourceFileNotFound
+  SourceFileNotFound(path: String)
   FailedToWriteOutput(error: simplifile.FileError)
+  OutputTargetIsNonGeneratedFile(path: String)
 }
 
 @internal
@@ -65,46 +66,49 @@ pub type GeneratedModule {
   )
 }
 
+const module_clue = "This module was generated automatically by **ffig**"
+
 pub fn main() -> Nil {
   let argv.Argv(arguments:, ..) = argv.load()
 
   case arguments {
     [target_file, output_name] -> {
-      case run(target_file, output_name) {
-        Ok(module) -> {
-          io.println(
-            "✨ Generated "
-            <> filepath.join(module.directory, module.output_filename),
-          )
-          exit(0)
-        }
-        Error(NoConfigFile) -> {
-          io.println(
-            "Error resolving typescript config, make sure you have a tsconfig.json in the current directory",
-          )
-          exit(1)
-        }
-        Error(SourceFileNotFound) -> {
-          io.println(
-            "Error loading source file, make sure " <> target_file <> " exists!",
-          )
-          exit(1)
-        }
-        Error(FailedToWriteOutput(error)) -> {
-          io.println(
-            "Error writing output file: " <> simplifile.describe_error(error),
-          )
-        }
-      }
+      run(target_file, output_name)
+      |> handle_result
+      exit(0)
+    }
+    [] -> {
+      run_all()
+      |> handle_run_all_result()
     }
     _ -> {
       io.println("Usage:\n")
       io.println(
         "gleam run -m ffig ./path/to/external_file.mts output_module_name\n",
       )
+      io.println("or:\n")
+      io.println("gleam run -m ffig\n")
       exit(1)
     }
   }
+}
+
+fn run_all() {
+  use src_files <- result.try(simplifile.get_files("src"))
+  use dev_files <- result.try(simplifile.get_files("dev"))
+  use test_files <- result.try(simplifile.get_files("test"))
+
+  src_files
+  |> list.append(dev_files)
+  |> list.append(test_files)
+  |> list.filter(string.ends_with(_, "_ffi.mts"))
+  |> list.each(fn(item) {
+    let output_name = filepath.base_name(item) |> string.replace("_ffi.mts", "")
+    run(item, output_name)
+    |> handle_result()
+  })
+
+  Ok(exit(0))
 }
 
 fn run(
@@ -116,9 +120,82 @@ fn run(
   let output = module_to_string(module)
   let output_file_path = filepath.join(module.directory, module.output_filename)
 
+  case simplifile.read(output_file_path) {
+    Error(_) -> {
+      write_output(module, output_file_path, output)
+    }
+    Ok(content) -> {
+      case is_generated_file(content) {
+        True -> write_output(module, output_file_path, output)
+        False -> Error(OutputTargetIsNonGeneratedFile(output_file_path))
+      }
+    }
+  }
+}
+
+fn handle_result(result: Result(GeneratedModule, ExecutionError)) {
+  case result {
+    Ok(module) -> {
+      io.println(
+        "✨ Generated "
+        <> filepath.join(module.directory, module.output_filename),
+      )
+    }
+    Error(NoConfigFile) -> {
+      io.println(
+        "Error resolving typescript config, make sure you have a tsconfig.json in the current directory",
+      )
+      exit(1)
+    }
+    Error(SourceFileNotFound(path)) -> {
+      io.println("Error loading source file, make sure " <> path <> " exists!")
+      exit(1)
+    }
+    Error(FailedToWriteOutput(error)) -> {
+      io.println(
+        "Error writing output file: " <> simplifile.describe_error(error),
+      )
+      exit(1)
+    }
+    Error(OutputTargetIsNonGeneratedFile(path)) -> {
+      io.println(
+        "The output target "
+        <> path
+        <> " exists and is not a ffig-generated file!",
+      )
+      io.println(
+        "If you don't care about the contents of this file, delete it and run ffig again.",
+      )
+      exit(1)
+    }
+  }
+}
+
+fn handle_run_all_result(result: Result(Nil, simplifile.FileError)) {
+  case result {
+    Error(error) -> {
+      io.println(
+        "Failed to list files, error: " <> simplifile.describe_error(error),
+      )
+    }
+    _ -> Nil
+  }
+}
+
+fn write_output(module, output_file_path, output) {
   case simplifile.write(output_file_path, output) {
     Ok(_) -> Ok(module)
     Error(error) -> Error(FailedToWriteOutput(error))
+  }
+}
+
+fn is_generated_file(content: String) {
+  let parts = string.split(content, "\n")
+  case parts {
+    [_, _, clue_line] -> {
+      string.contains(clue_line, module_clue)
+    }
+    _ -> False
   }
 }
 
@@ -132,7 +209,9 @@ pub fn module_to_string(generated_module: GeneratedModule) -> String {
     "//// This module contains bindings to the external functions defined in\n//// `"
     <> source_path
     <> "`  \n"
-    <> "//// > This module was generated automatically by **ffig**, do not edit it manually!  \n"
+    <> "//// > "
+    <> module_clue
+    <> ", do not edit it manually!  \n"
     <> "//// > To re-generate, run `gleam run -m ffig "
     <> source_path
     <> " "

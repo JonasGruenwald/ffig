@@ -16,6 +16,11 @@ pub fn resolve_external_functions_test() {
   |> birdie.snap("external_functions")
 }
 
+pub fn resolve_external_functions_nonexistant_file_test() {
+  assert Error(ffig.SourceFileNotFound("test/fixtures/nonexistant.mts"))
+    == ffig.resolve_external_functions("test/fixtures/nonexistant.mts")
+}
+
 pub fn generate_module_test() {
   let external_path = "test/fixtures/typescript_externals.mts"
   let target_filename = "typescript_externals_bindings"

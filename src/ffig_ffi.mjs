@@ -1,5 +1,5 @@
 import ts from "typescript";
-import { ExecutionError$NoConfigFile, Parameter$Parameter, ExternalFunction$ExternalFunction, Type$GleamString, Type$GleamFloat, Type$GleamBool, Type$GleamNil, Type$GleamTuple, Type$GleamDynamic, Type$JavaScriptArray, Type$GleamCustomType, Type$JavaScriptPromise, Type$OpaqueExternal, } from "./ffig.mjs";
+import { ExecutionError$NoConfigFile, Parameter$Parameter, ExternalFunction$ExternalFunction, Type$GleamString, Type$GleamFloat, Type$GleamBool, Type$GleamNil, Type$GleamTuple, Type$GleamDynamic, Type$JavaScriptArray, Type$GleamCustomType, Type$JavaScriptPromise, Type$OpaqueExternal, ExecutionError$SourceFileNotFound, } from "./ffig.mjs";
 import { Result$Ok, Result$Error } from "./gleam.mjs";
 const GLEAM_BUILD_ENTRY = "/build/dev/javascript/";
 const format_module_path = (input) => {
@@ -96,7 +96,7 @@ export const resolve_external_functions = (filepath) => {
     });
     const source_file = program.getSourceFile(filepath);
     if (!source_file) {
-        throw new Error(`Could not find source file: ${filepath}`);
+        return Result$Error(ExecutionError$SourceFileNotFound(filepath));
     }
     const type_checker = program.getTypeChecker();
     const results = [];

@@ -16,6 +16,7 @@ import {
   Type$GleamCustomType,
   Type$JavaScriptPromise,
   Type$OpaqueExternal,
+  ExecutionError$SourceFileNotFound,
 } from "./ffig.mjs";
 import { Result$Ok, Result$Error, type Result } from "./gleam.mjs";
 
@@ -124,7 +125,7 @@ export const resolve_external_functions = (
   const parsedCommandLine = ts.getParsedCommandLineOfConfigFile(
     configPath,
     {},
-    {
+    { 
       ...ts.sys,
       onUnRecoverableConfigFileDiagnostic: () => {
         // TODO: handle this properly
@@ -142,7 +143,7 @@ export const resolve_external_functions = (
 
   const source_file = program.getSourceFile(filepath);
   if (!source_file) {
-    throw new Error(`Could not find source file: ${filepath}`);
+    return Result$Error(ExecutionError$SourceFileNotFound(filepath));
   }
 
   const type_checker = program.getTypeChecker();

@@ -68,3 +68,9 @@ const wobble = (input) => {
 export { wobble as declaredAndLaterExported };
 export const numberToString = (input) => `${input}`;
 export const shuffleMyTuple = ([a, b, c]) => [c, b, a];
+export const returnMyResult = () => Result$Ok("Good news everyone!");
+export const iPromiseYouAnArray = () => Promise.resolve([1, 2, 3]);
+export const getMyType = () => ({
+    name: "wibble",
+});
+export const whatWillItBe = () => "I don't know";
