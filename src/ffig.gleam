@@ -56,7 +56,9 @@ pub type GeneratedModule {
     imports: Set(String),
     external_types: Set(String),
     external_functions: List(String),
-    output_path: String,
+    directory: String,
+    input_filename: String,
+    output_filename: String,
   )
 }
 
@@ -65,21 +67,69 @@ pub fn main() -> Nil {
 }
 
 @internal
+pub fn module_to_string(generated_module: GeneratedModule) -> String {
+  let source_path =
+    filepath.join(generated_module.directory, generated_module.input_filename)
+  let plain_output_name =
+    string.replace(generated_module.output_filename, ".gleam", "")
+  let header =
+    "//// This module contains bindings to the external functions defined in\n//// `"
+    <> source_path
+    <> "`  \n"
+    <> "//// > This module was generated automatically by **ffig**, do not edit it manually!  \n"
+    <> "//// > To re-generate, run `gleam run -m ffig "
+    <> source_path
+    <> " "
+    <> plain_output_name
+    <> "`\n"
+
+  let import_declarations =
+    set.fold(generated_module.imports, "", fn(accumulator, current) {
+      accumulator <> "import " <> current <> "\n"
+    })
+
+  let type_declarations =
+    set.fold(generated_module.external_types, "", fn(accumulator, current) {
+      accumulator <> "pub type " <> current <> "\n"
+    })
+
+  let external_declarations =
+    generated_module.external_functions |> string.join("\n\n")
+
+  header
+  <> "\n"
+  <> import_declarations
+  <> "\n"
+  <> type_declarations
+  <> "\n"
+  <> external_declarations
+}
+
+@internal
 pub fn generate_module(
   external_file_path: String,
   target_file_name: String,
   functions_array: Array(ExternalFunction),
 ) {
+  let external_file_name = filepath.base_name(external_file_path)
+  let external_file_extension =
+    filepath.extension(external_file_name) |> result.unwrap("")
+  let external_file_name_without_extension =
+    string.replace(external_file_name, "." <> external_file_extension, "")
+  let external_target_file_name =
+    "./" <> external_file_name_without_extension <> ".mjs"
+
   let external_file_directory = filepath.directory_name(external_file_path)
-  let output_path =
-    filepath.join(external_file_directory, target_file_name <> ".gleam")
+  let output_filename = target_file_name <> ".gleam"
   array.to_list(functions_array)
   |> list.fold(
     GeneratedModule(
       imports: set.new(),
       external_types: set.new(),
       external_functions: [],
-      output_path:,
+      output_filename: output_filename,
+      input_filename: external_file_name,
+      directory: external_file_directory,
     ),
     fn(module: GeneratedModule, current: ExternalFunction) {
       let parameters = array.to_list(current.parameters)
@@ -120,13 +170,6 @@ pub fn generate_module(
             _ -> Error(Nil)
           }
         })
-
-      let external_file_name = filepath.base_name(external_file_path)
-      let external_file_extension =
-        filepath.extension(external_file_name) |> result.unwrap("")
-      let external_file_name =
-        string.replace(external_file_name, "." <> external_file_extension, "")
-      let external_target_file_name = "./" <> external_file_name <> ".mjs"
       let external_definition =
         build_external_attribute(external_target_file_name, current.name)
       let function_name = justin.snake_case(current.name)

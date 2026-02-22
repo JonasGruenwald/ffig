@@ -1,6 +1,8 @@
 ---
 version: 1.5.4
 title: generated_module_abstract
+file: ./test/ffig_test.gleam
+test_name: generate_module_test
 ---
 GeneratedModule(
   Set(dict.from_list([
@@ -42,5 +44,7 @@ pub fn get_complex_gleam_type(input: String) -> gleam_types.ComplexType",
     "@external(javascript, "././typescript_externals.mjs", "getSimpleGleamType")
 pub fn get_simple_gleam_type(target: Float) -> gleam_types.SimpleType",
   ],
-  "test/fixtures/typescript_externals_bindings.gleam",
+  "test/fixtures",
+  "typescript_externals.mts",
+  "typescript_externals_bindings.gleam",
 )

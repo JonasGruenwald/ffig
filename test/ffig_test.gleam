@@ -26,3 +26,14 @@ pub fn generate_module_test() {
   |> pprint.format()
   |> birdie.snap("generated_module_abstract")
 }
+
+pub fn module_to_string_test() {
+  let external_path = "test/fixtures/typescript_externals.mts"
+  let target_filename = "typescript_externals_bindings"
+  let assert Ok(external_functions) =
+    ffig.resolve_external_functions("test/fixtures/typescript_externals.mts")
+
+  ffig.generate_module(external_path, target_filename, external_functions)
+  |> ffig.module_to_string
+  |> birdie.snap("generated_module_concrete")
+}
