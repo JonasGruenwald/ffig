@@ -15,6 +15,25 @@ import gleam/javascript/promise
 import gleam/dynamic
 
 pub type MyClass
+pub type MyJavaScriptType
+
+@external(javascript, "./typescript_externals.mjs", "whatWillItBe")
+pub fn what_will_it_be() -> dynamic.Dynamic
+
+@external(javascript, "./typescript_externals.mjs", "getMyType")
+pub fn get_my_type() -> MyJavaScriptType
+
+@external(javascript, "./typescript_externals.mjs", "iPromiseYouAnArray")
+pub fn i_promise_you_an_array() -> promise.Promise(array.Array(Float))
+
+@external(javascript, "./typescript_externals.mjs", "returnMyResult")
+pub fn return_my_result() -> Result(String, String)
+
+@external(javascript, "./typescript_externals.mjs", "shuffleMyTuple")
+pub fn shuffle_my_tuple(arg_0: #(Float, String, Bool)) -> #(Bool, String, Float)
+
+@external(javascript, "./typescript_externals.mjs", "numberToString")
+pub fn number_to_string(input: Float) -> String
 
 @external(javascript, "./typescript_externals.mjs", "declaredAndLaterExported")
 pub fn declared_and_later_exported(input: Bool) -> promise.Promise(String)

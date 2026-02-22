@@ -227,10 +227,10 @@ pub fn generate_module(
         })
       let external_definition =
         build_external_attribute(external_target_file_name, current.name)
-      let function_name = justin.snake_case(current.name)
+      let function_name = format_function_name(current.name)
       let parameter_definitions =
         list.map(parameters, fn(parameter) {
-          justin.snake_case(parameter.name)
+          format_parameter_name(parameter.name)
           <> ": "
           <> build_type_definition(parameter.parameter_type)
         })
@@ -344,6 +344,32 @@ fn module_name(module_path: String) -> String {
   case parts {
     [name, ..] -> name
     [] -> ""
+  }
+}
+
+fn format_function_name(name) {
+  // TODO: properly ensure gleam-safe name here
+  string.trim(name)
+  |> justin.snake_case()
+}
+
+fn format_parameter_name(name) {
+  // TODO: properly ensure gleam-safe name here
+  let name = string.trim(name) |> justin.snake_case
+  case name {
+    "0" <> _
+    | "1" <> _
+    | "2" <> _
+    | "3" <> _
+    | "4" <> _
+    | "5" <> _
+    | "6" <> _
+    | "7" <> _
+    | "8" <> _
+    | "9" <> _ -> {
+      "arg_" <> name
+    }
+    _ -> name
   }
 }
 

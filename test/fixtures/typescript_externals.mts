@@ -89,3 +89,27 @@ const wobble = (input: boolean) => {
 };
 
 export { wobble as declaredAndLaterExported };
+
+export const numberToString = (input: number) => `${input}`;
+
+export const shuffleMyTuple = ([a, b, c]: [number, string, boolean]): [
+  boolean,
+  string,
+  number,
+] => [c, b, a];
+
+export const returnMyResult = (): Result<string, string> =>
+  Result$Ok("Good news everyone!");
+
+export const iPromiseYouAnArray = (): Promise<Array<number>> =>
+  Promise.resolve([1, 2, 3]);
+
+type MyJavaScriptType = {
+  name: string;
+};
+
+export const getMyType = (): MyJavaScriptType => ({
+  name: "wibble",
+});
+
+export const whatWillItBe = (): string | boolean | number => "I don't know";

@@ -109,4 +109,51 @@ test_name: resolve_external_functions_test
     #(Parameter("input", GleamBool)),
     JavaScriptPromise(GleamString),
   ),
+  ExternalFunction(
+    "numberToString",
+    #(Parameter("input", GleamFloat)),
+    GleamString,
+  ),
+  ExternalFunction(
+    "shuffleMyTuple",
+    #(
+      Parameter(
+        "__0",
+        GleamTuple(#(
+          GleamFloat,
+          GleamString,
+          GleamBool,
+        )),
+      ),
+    ),
+    GleamTuple(#(
+      GleamBool,
+      GleamString,
+      GleamFloat,
+    )),
+  ),
+  ExternalFunction(
+    "returnMyResult",
+    #(),
+    GleamCustomType(
+      "",
+      "Result",
+      #(GleamString, GleamString),
+    ),
+  ),
+  ExternalFunction(
+    "iPromiseYouAnArray",
+    #(),
+    JavaScriptPromise(JavaScriptArray(GleamFloat)),
+  ),
+  ExternalFunction(
+    "getMyType",
+    #(),
+    OpaqueExternal("MyJavaScriptType"),
+  ),
+  ExternalFunction(
+    "whatWillItBe",
+    #(),
+    GleamDynamic,
+  ),
 )

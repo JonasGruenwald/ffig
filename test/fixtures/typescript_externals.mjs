@@ -66,3 +66,5 @@ const wobble = (input) => {
     return Promise.resolve("Hello");
 };
 export { wobble as declaredAndLaterExported };
+export const numberToString = (input) => `${input}`;
+export const shuffleMyTuple = ([a, b, c]) => [c, b, a];
