@@ -15,33 +15,33 @@ GeneratedModule(
     #("MyClass", Nil),
   ])),
   [
-    "@external(javascript, "././typescript_externals.mjs", "getUnion")
+    "@external(javascript, "./typescript_externals.mjs", "getUnion")
 pub fn get_union() -> dynamic.Dynamic",
-    "@external(javascript, "././typescript_externals.mjs", "getArray")
+    "@external(javascript, "./typescript_externals.mjs", "getArray")
 pub fn get_array(length: Float) -> array.Array(Float)",
-    "@external(javascript, "././typescript_externals.mjs", "getTuple")
+    "@external(javascript, "./typescript_externals.mjs", "getTuple")
 pub fn get_tuple() -> #(String, Float, Bool)",
-    "@external(javascript, "././typescript_externals.mjs", "getClass")
+    "@external(javascript, "./typescript_externals.mjs", "getClass")
 pub fn get_class() -> MyClass",
-    "@external(javascript, "././typescript_externals.mjs", "getVoidPromise")
+    "@external(javascript, "./typescript_externals.mjs", "getVoidPromise")
 pub fn get_void_promise() -> promise.Promise(Nil)",
-    "@external(javascript, "././typescript_externals.mjs", "getPromise")
+    "@external(javascript, "./typescript_externals.mjs", "getPromise")
 pub fn get_promise() -> promise.Promise(String)",
-    "@external(javascript, "././typescript_externals.mjs", "setAndGetString")
+    "@external(javascript, "./typescript_externals.mjs", "setAndGetString")
 pub fn set_and_get_string(input: Bool) -> Bool",
-    "@external(javascript, "././typescript_externals.mjs", "setAndGetBool")
+    "@external(javascript, "./typescript_externals.mjs", "setAndGetBool")
 pub fn set_and_get_bool(input: Bool) -> Bool",
-    "@external(javascript, "././typescript_externals.mjs", "setAndGetNumber")
+    "@external(javascript, "./typescript_externals.mjs", "setAndGetNumber")
 pub fn set_and_get_number(input: Float) -> Float",
-    "@external(javascript, "././typescript_externals.mjs", "getGleamResult")
+    "@external(javascript, "./typescript_externals.mjs", "getGleamResult")
 pub fn get_gleam_result() -> Result(String, String)",
-    "@external(javascript, "././typescript_externals.mjs", "getGenericGleamTypeNumber")
+    "@external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeNumber")
 pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType(Float)",
-    "@external(javascript, "././typescript_externals.mjs", "getGenericGleamTypeString")
+    "@external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeString")
 pub fn get_generic_gleam_type_string(input: String) -> gleam_types.GenericType(String)",
-    "@external(javascript, "././typescript_externals.mjs", "getComplexGleamType")
+    "@external(javascript, "./typescript_externals.mjs", "getComplexGleamType")
 pub fn get_complex_gleam_type(input: String) -> gleam_types.ComplexType",
-    "@external(javascript, "././typescript_externals.mjs", "getSimpleGleamType")
+    "@external(javascript, "./typescript_externals.mjs", "getSimpleGleamType")
 pub fn get_simple_gleam_type(target: Float) -> gleam_types.SimpleType",
   ],
   "test/fixtures",

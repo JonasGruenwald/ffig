@@ -1,24 +1,13 @@
-# ffig
+# `ffig` – Generate Gleam Externals from Typescript
 
-[![Package Version](https://img.shields.io/hexpm/v/ffig)](https://hex.pm/packages/ffig)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/ffig/)
+## Usage
 
-```sh
-gleam add ffig@1
-```
-```gleam
-import ffig
-
-pub fn main() -> Nil {
-  // TODO: An example of the project in use
-}
-```
-
-Further documentation can be found at <https://hexdocs.pm/ffig>.
-
-## Development
+1. Set up your project with a `tsconfig.json`
+2. Write some exported functions in a typescript file like `externals_ffi.mts`
+3. Generate a Gleam module with bindings to those functions:
 
 ```sh
-gleam run   # Run the project
-gleam test  # Run the tests
+gleam run -m ffig src/externals_ffi.mts externals
 ```
+
+An `externals.gleam` file should be generated for you.
