@@ -170,6 +170,8 @@ pub fn get_my_type() -> MyJavaScriptType
 
 For typescript types that can't otherwise be represented in Gleam, such as unions, intersections and null, `ffig` will set the type to dynamic. You can then decode them on the Gleam side if desired.
 
+The same is done for the `any` type from typescript, so if you explicitly want something to be generated as dynamic in Gleam, you can just set the type to `any` on the typescript side.
+
 `wobble_ffi.mts`
 
 ```ts
