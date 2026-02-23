@@ -32,8 +32,8 @@ With the `outDir` set to the directory where Gleam puts its output files as well
 output will go into `build/dev/javascript/wobble`.  
 Run **first** the Gleam build and **second** the Typescript build.
 
-This won't work for a published library (like this one) because your project can't be built by the Gleam build tool alone that way.  
-For a published library the simplest way is likely to include the typescript build output in the `src` directory.
+This won't work for a library (like this one) because your project can't be built by the Gleam build tool alone that way.  
+For a library the simplest way is likely to include the typescript build output in the `src` directory.
 
 ## Usage
 
