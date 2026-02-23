@@ -12,12 +12,15 @@ GeneratedModule(
     #("gleam/javascript/promise", Nil),
   ])),
   Set(dict.from_list([
+    #("Event", Nil),
     #("MyClass", Nil),
     #("MyJavaScriptType", Nil),
     #("Object", Nil),
     #("never", Nil),
   ])),
   [
+    "@external(javascript, "./typescript_externals.mjs", "addSomeHandler")
+pub fn add_some_handler(channel: String, callback: fn(Event) -> Nil) -> Nil",
     "@external(javascript, "./typescript_externals.mjs", "returnUndefined")
 pub fn return_undefined() -> Nil",
     "@external(javascript, "./typescript_externals.mjs", "returnObject")

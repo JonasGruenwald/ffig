@@ -24,6 +24,7 @@ pub type Type {
   GleamString
   GleamNil
   GleamDynamic
+  GleamFunction(parameters: Array(Parameter), return_type: Type)
   JavaScriptArray(element: Type)
   JavaScriptPromise(value: Type)
   GleamTuple(items: Array(Type))
@@ -372,6 +373,17 @@ fn expand_types(input: List(Type), accumulator: List(Type)) -> List(Type) {
             ..accumulator
           ])
         }
+        GleamFunction(parameters:, return_type:) -> {
+          let additional_types = [
+            return_type,
+            ..array.to_list(parameters)
+            |> list.map(fn(p) { p.parameter_type })
+          ]
+          expand_types(list.append(additional_types, rest), [
+            current,
+            ..accumulator
+          ])
+        }
         _ -> expand_types(rest, [current, ..accumulator])
       }
     }
@@ -421,6 +433,14 @@ fn build_type_definition(input: Type) -> String {
           <> ")"
         }
       }
+    }
+    GleamFunction(parameters:, return_type:) -> {
+      let parameters = array.to_list(parameters)
+      "fn("
+      <> list.map(parameters, fn(p) { build_type_definition(p.parameter_type) })
+      |> string.join(", ")
+      <> ") -> "
+      <> build_type_definition(return_type)
     }
     OpaqueExternal(name:) -> format_type_name(name)
   }

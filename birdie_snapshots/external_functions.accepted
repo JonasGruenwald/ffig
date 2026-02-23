@@ -214,4 +214,24 @@ test_name: resolve_external_functions_test
     GleamNil,
     Error(Nil),
   ),
+  ExternalFunction(
+    "addSomeHandler",
+    #(
+      Parameter("channel", GleamString),
+      Parameter(
+        "callback",
+        GleamFunction(
+          #(
+            Parameter(
+              "event",
+              OpaqueExternal("Event"),
+            ),
+          ),
+          GleamNil,
+        ),
+      ),
+    ),
+    GleamNil,
+    Error(Nil),
+  ),
 )

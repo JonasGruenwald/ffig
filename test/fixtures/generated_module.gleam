@@ -4,14 +4,22 @@
 //// > To re-generate, run `gleam run -m ffig test/fixtures/typescript_externals.mts generated_module`
 
 import fixtures/gleam_types
+import gleam/dynamic
 import gleam/javascript/array
 import gleam/javascript/promise
-import gleam/dynamic
 
 pub type MyJavaScriptType
+
+pub type Event
+
 pub type Object
+
 pub type Never
+
 pub type MyClass
+
+@external(javascript, "./typescript_externals.mjs", "addSomeHandler")
+pub fn add_some_handler(channel: String, callback: fn(Event) -> Nil) -> Nil
 
 @external(javascript, "./typescript_externals.mjs", "returnUndefined")
 pub fn return_undefined() -> Nil
@@ -87,10 +95,14 @@ pub fn set_and_get_number(input: Float) -> Float
 pub fn get_gleam_result() -> Result(String, String)
 
 @external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeNumber")
-pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType(Float)
+pub fn get_generic_gleam_type_number(
+  input: Float,
+) -> gleam_types.GenericType(Float)
 
 @external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeString")
-pub fn get_generic_gleam_type_string(input: String) -> gleam_types.GenericType(String)
+pub fn get_generic_gleam_type_string(
+  input: String,
+) -> gleam_types.GenericType(String)
 
 @external(javascript, "./typescript_externals.mjs", "getComplexGleamType")
 pub fn get_complex_gleam_type(input: String) -> gleam_types.ComplexType

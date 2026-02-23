@@ -166,21 +166,31 @@ pub type MyJavaScriptType
 pub fn get_my_type() -> MyJavaScriptType
 ```
 
-### Undefined
+### Anonymous Functions
 
-The JS value `undefined` maps directly to Gleam's `Nil`
+Functions for callback parameters are carried over into Gleam as you would expect.  
+Note how JS `undefined` maps to `Nil` in Gleam.
 
 `wobble_ffi.mts`
 
 ```ts
-export const returnUndefined = (): undefined => undefined;
+export const addSomeHandler = (
+  channel: string,
+  callback: (event: Event) => void,
+) => {
+  if (channel === "news") {
+    callback(new CustomEvent("newsflash"));
+  }
+};
 ```
 
 `wobble.gleam`
 
 ```gleam
-@external(javascript, "./typescript_externals.mjs", "returnUndefined")
-pub fn return_undefined() -> Nil
+pub type Event
+
+@external(javascript, "./typescript_externals.mjs", "addSomeHandler")
+pub fn add_some_handler(channel: String, callback: fn(Event) -> Nil) -> Nil
 ```
 
 ### And the Rest

@@ -15,9 +15,13 @@ import gleam/javascript/promise
 import gleam/dynamic
 
 pub type MyJavaScriptType
+pub type Event
 pub type Object
 pub type Never
 pub type MyClass
+
+@external(javascript, "./typescript_externals.mjs", "addSomeHandler")
+pub fn add_some_handler(channel: String, callback: fn(Event) -> Nil) -> Nil
 
 @external(javascript, "./typescript_externals.mjs", "returnUndefined")
 pub fn return_undefined() -> Nil

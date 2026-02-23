@@ -136,3 +136,12 @@ export function returnObject(): Object {
 }
 
 export const returnUndefined = (): undefined => undefined;
+
+export const addSomeHandler = (
+  channel: string,
+  callback: (event: Event) => void,
+) => {
+  if (channel === "news") {
+    callback(new CustomEvent("newsflash"));
+  }
+};

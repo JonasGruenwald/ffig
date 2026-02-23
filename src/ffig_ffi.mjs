@@ -1,5 +1,5 @@
 import ts from "typescript";
-import { ExecutionError$NoConfigFile, Parameter$Parameter, ExternalFunction$ExternalFunction, Type$GleamString, Type$GleamFloat, Type$GleamBool, Type$GleamNil, Type$GleamTuple, Type$GleamDynamic, Type$JavaScriptArray, Type$GleamCustomType, Type$JavaScriptPromise, Type$OpaqueExternal, ExecutionError$SourceFileNotFound, } from "./ffig.mjs";
+import { ExecutionError$NoConfigFile, Parameter$Parameter, ExternalFunction$ExternalFunction, Type$GleamString, Type$GleamFloat, Type$GleamBool, Type$GleamNil, Type$GleamTuple, Type$GleamDynamic, Type$JavaScriptArray, Type$GleamCustomType, Type$JavaScriptPromise, Type$OpaqueExternal, Type$GleamFunction, ExecutionError$SourceFileNotFound, } from "./ffig.mjs";
 import { Result$Ok, Result$Error } from "./gleam.mjs";
 const GLEAM_BUILD_ENTRY = "/build/dev/javascript/";
 const get_documentation = (symbol, typeChecker) => {
@@ -83,6 +83,16 @@ const resolve_type = (type, typeChecker, currentFile) => {
             if (type_string.startsWith("Promise<") && type_arguments.length === 1) {
                 return Type$JavaScriptPromise(type_arguments[0]);
             }
+        }
+        const call_signatures = type.getCallSignatures();
+        if (call_signatures.length > 0) {
+            const signature = call_signatures[0];
+            const parameters = signature.getParameters().map((param) => {
+                const param_type = typeChecker.getTypeOfSymbolAtLocation(param, param.valueDeclaration ?? param.declarations?.[0]);
+                return Parameter$Parameter(param.getName(), resolve_type(param_type, typeChecker, currentFile));
+            });
+            const return_type = resolve_type(signature.getReturnType(), typeChecker, currentFile);
+            return Type$GleamFunction(parameters, return_type);
         }
     }
     return Type$OpaqueExternal(type_string);

@@ -91,3 +91,8 @@ export function returnObject() {
     return Object.create(null);
 }
 export const returnUndefined = () => undefined;
+export const addSomeHandler = (channel, callback) => {
+    if (channel === "news") {
+        callback(new CustomEvent("newsflash"));
+    }
+};
