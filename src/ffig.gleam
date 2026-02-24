@@ -231,7 +231,7 @@ pub fn module_to_string(generated_module: GeneratedModule) -> String {
     })
 
   let external_declarations =
-    generated_module.external_functions |> string.join("\n\n")
+    generated_module.external_functions |> list.reverse |> string.join("\n\n")
 
   header
   <> "\n"

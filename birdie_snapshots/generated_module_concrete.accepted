@@ -20,90 +20,90 @@ pub type Object
 pub type Never
 pub type MyClass
 
-@external(javascript, "./typescript_externals.mjs", "addSomeHandler")
-pub fn add_some_handler(channel: String, callback: fn(Event) -> Nil) -> Nil
+@external(javascript, "./typescript_externals.mjs", "getSimpleGleamType")
+pub fn get_simple_gleam_type(target: Float) -> gleam_types.SimpleType
 
-@external(javascript, "./typescript_externals.mjs", "returnUndefined")
-pub fn return_undefined() -> Nil
+@external(javascript, "./typescript_externals.mjs", "getComplexGleamType")
+pub fn get_complex_gleam_type(input: String) -> gleam_types.ComplexType
 
-@external(javascript, "./typescript_externals.mjs", "returnObject")
-pub fn return_object() -> Object
+@external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeString")
+pub fn get_generic_gleam_type_string(input: String) -> gleam_types.GenericType(String)
 
-@external(javascript, "./typescript_externals.mjs", "returnAny")
-pub fn return_any() -> dynamic.Dynamic
+@external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeNumber")
+pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType(Float)
+
+@external(javascript, "./typescript_externals.mjs", "getGleamResult")
+pub fn get_gleam_result() -> Result(String, String)
+
+@external(javascript, "./typescript_externals.mjs", "setAndGetNumber")
+pub fn set_and_get_number(input: Float) -> Float
+
+@external(javascript, "./typescript_externals.mjs", "setAndGetBool")
+pub fn set_and_get_bool(input: Bool) -> Bool
+
+@external(javascript, "./typescript_externals.mjs", "setAndGetString")
+pub fn set_and_get_string(input: String) -> String
+
+@external(javascript, "./typescript_externals.mjs", "getPromise")
+pub fn get_promise() -> promise.Promise(String)
+
+@external(javascript, "./typescript_externals.mjs", "getVoidPromise")
+pub fn get_void_promise() -> promise.Promise(Nil)
+
+@external(javascript, "./typescript_externals.mjs", "getClass")
+pub fn get_class() -> MyClass
+
+@external(javascript, "./typescript_externals.mjs", "getTuple")
+pub fn get_tuple() -> #(String, Float, Bool)
+
+@external(javascript, "./typescript_externals.mjs", "getArray")
+pub fn get_array(length: Float) -> array.Array(Float)
+
+@external(javascript, "./typescript_externals.mjs", "getUnion")
+pub fn get_union() -> dynamic.Dynamic
+
+@external(javascript, "./typescript_externals.mjs", "exported_arrow_function")
+pub fn exported_arrow_function() -> Float
+
+@external(javascript, "./typescript_externals.mjs", "declaredAndLaterExported")
+pub fn declared_and_later_exported(input: Bool) -> promise.Promise(String)
+
+@external(javascript, "./typescript_externals.mjs", "numberToString")
+pub fn number_to_string(input: Float) -> String
+
+@external(javascript, "./typescript_externals.mjs", "shuffleMyTuple")
+pub fn shuffle_my_tuple(arg_0: #(Float, String, Bool)) -> #(Bool, String, Float)
+
+@external(javascript, "./typescript_externals.mjs", "returnMyResult")
+pub fn return_my_result() -> Result(String, String)
+
+@external(javascript, "./typescript_externals.mjs", "iPromiseYouAnArray")
+pub fn i_promise_you_an_array() -> promise.Promise(array.Array(Float))
+
+@external(javascript, "./typescript_externals.mjs", "getMyType")
+pub fn get_my_type() -> MyJavaScriptType
+
+@external(javascript, "./typescript_externals.mjs", "whatWillItBe")
+pub fn what_will_it_be() -> dynamic.Dynamic
+
+@external(javascript, "./typescript_externals.mjs", "neverReturn")
+pub fn never_return() -> Never
+
+@external(javascript, "./typescript_externals.mjs", "returnUnknown")
+pub fn return_unknown() -> dynamic.Dynamic
 
 /// This function has some jsdoc documentation
 @external(javascript, "./typescript_externals.mjs", "documentedFunction")
 pub fn documented_function() -> String
 
-@external(javascript, "./typescript_externals.mjs", "returnUnknown")
-pub fn return_unknown() -> dynamic.Dynamic
+@external(javascript, "./typescript_externals.mjs", "returnAny")
+pub fn return_any() -> dynamic.Dynamic
 
-@external(javascript, "./typescript_externals.mjs", "neverReturn")
-pub fn never_return() -> Never
+@external(javascript, "./typescript_externals.mjs", "returnObject")
+pub fn return_object() -> Object
 
-@external(javascript, "./typescript_externals.mjs", "whatWillItBe")
-pub fn what_will_it_be() -> dynamic.Dynamic
+@external(javascript, "./typescript_externals.mjs", "returnUndefined")
+pub fn return_undefined() -> Nil
 
-@external(javascript, "./typescript_externals.mjs", "getMyType")
-pub fn get_my_type() -> MyJavaScriptType
-
-@external(javascript, "./typescript_externals.mjs", "iPromiseYouAnArray")
-pub fn i_promise_you_an_array() -> promise.Promise(array.Array(Float))
-
-@external(javascript, "./typescript_externals.mjs", "returnMyResult")
-pub fn return_my_result() -> Result(String, String)
-
-@external(javascript, "./typescript_externals.mjs", "shuffleMyTuple")
-pub fn shuffle_my_tuple(arg_0: #(Float, String, Bool)) -> #(Bool, String, Float)
-
-@external(javascript, "./typescript_externals.mjs", "numberToString")
-pub fn number_to_string(input: Float) -> String
-
-@external(javascript, "./typescript_externals.mjs", "declaredAndLaterExported")
-pub fn declared_and_later_exported(input: Bool) -> promise.Promise(String)
-
-@external(javascript, "./typescript_externals.mjs", "exported_arrow_function")
-pub fn exported_arrow_function() -> Float
-
-@external(javascript, "./typescript_externals.mjs", "getUnion")
-pub fn get_union() -> dynamic.Dynamic
-
-@external(javascript, "./typescript_externals.mjs", "getArray")
-pub fn get_array(length: Float) -> array.Array(Float)
-
-@external(javascript, "./typescript_externals.mjs", "getTuple")
-pub fn get_tuple() -> #(String, Float, Bool)
-
-@external(javascript, "./typescript_externals.mjs", "getClass")
-pub fn get_class() -> MyClass
-
-@external(javascript, "./typescript_externals.mjs", "getVoidPromise")
-pub fn get_void_promise() -> promise.Promise(Nil)
-
-@external(javascript, "./typescript_externals.mjs", "getPromise")
-pub fn get_promise() -> promise.Promise(String)
-
-@external(javascript, "./typescript_externals.mjs", "setAndGetString")
-pub fn set_and_get_string(input: String) -> String
-
-@external(javascript, "./typescript_externals.mjs", "setAndGetBool")
-pub fn set_and_get_bool(input: Bool) -> Bool
-
-@external(javascript, "./typescript_externals.mjs", "setAndGetNumber")
-pub fn set_and_get_number(input: Float) -> Float
-
-@external(javascript, "./typescript_externals.mjs", "getGleamResult")
-pub fn get_gleam_result() -> Result(String, String)
-
-@external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeNumber")
-pub fn get_generic_gleam_type_number(input: Float) -> gleam_types.GenericType(Float)
-
-@external(javascript, "./typescript_externals.mjs", "getGenericGleamTypeString")
-pub fn get_generic_gleam_type_string(input: String) -> gleam_types.GenericType(String)
-
-@external(javascript, "./typescript_externals.mjs", "getComplexGleamType")
-pub fn get_complex_gleam_type(input: String) -> gleam_types.ComplexType
-
-@external(javascript, "./typescript_externals.mjs", "getSimpleGleamType")
-pub fn get_simple_gleam_type(target: Float) -> gleam_types.SimpleType
+@external(javascript, "./typescript_externals.mjs", "addSomeHandler")
+pub fn add_some_handler(channel: String, callback: fn(Event) -> Nil) -> Nil
