@@ -120,6 +120,14 @@ export const returnMyResult = (): Result<string, string> =>
 pub fn return_my_result() -> Result(String, String)
 ```
 
+Note that at the moment this doesn't work correctly for a type with a single variant where the variant is named differently than the type, like this:
+
+```gleam
+pub type Wibble{
+  Wobble
+}
+```
+
 ### Arrays and Promises
 
 Arrays and promises are supported by `gleam_javascript`, so when used `ffig` will declare them as such in the generated module.
