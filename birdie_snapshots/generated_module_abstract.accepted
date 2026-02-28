@@ -13,12 +13,19 @@ GeneratedModule(
   ])),
   Set(dict.from_list([
     #("Event", Nil),
+    #("MutableObject(a)", Nil),
     #("MyClass", Nil),
     #("MyJavaScriptType", Nil),
+    #("Never", Nil),
     #("Object", Nil),
-    #("never", Nil),
   ])),
   [
+    "@external(javascript, "./typescript_externals.mjs", "get_mutable_value")
+pub fn get_mutable_value(mutable: MutableObject(t)) -> t",
+    "@external(javascript, "./typescript_externals.mjs", "update_mutable")
+pub fn update_mutable(mutable: MutableObject(t), new_item: t) -> Nil",
+    "@external(javascript, "./typescript_externals.mjs", "create_mutable")
+pub fn create_mutable(item: t) -> MutableObject(t)",
     "@external(javascript, "./typescript_externals.mjs", "addSomeHandler")
 pub fn add_some_handler(channel: String, callback: fn(Event) -> Nil) -> Nil",
     "@external(javascript, "./typescript_externals.mjs", "returnUndefined")

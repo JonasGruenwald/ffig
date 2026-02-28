@@ -1,5 +1,5 @@
 import ts from "typescript";
-import { ExecutionError$NoConfigFile, Parameter$Parameter, ExternalFunction$ExternalFunction, Type$GleamString, Type$GleamFloat, Type$GleamBool, Type$GleamNil, Type$GleamTuple, Type$GleamDynamic, Type$JavaScriptArray, Type$GleamCustomType, Type$JavaScriptPromise, Type$OpaqueExternal, Type$GleamFunction, ExecutionError$SourceFileNotFound, } from "./ffig.mjs";
+import { ExecutionError$NoConfigFile, Parameter$Parameter, ExternalFunction$ExternalFunction, Type$GleamString, Type$GleamFloat, Type$GleamBool, Type$GleamNil, Type$GleamTuple, Type$GleamDynamic, Type$JavaScriptArray, Type$GleamCustomType, Type$JavaScriptPromise, Type$OpaqueExternal, Type$GleamFunction, Type$TypeVariable, ExecutionError$SourceFileNotFound, } from "./ffig.mjs";
 import { Result$Ok, Result$Error } from "./gleam.mjs";
 const GLEAM_BUILD_ENTRY = "/build/dev/javascript/";
 const get_documentation = (symbol, typeChecker) => {
@@ -59,6 +59,11 @@ const resolve_type = (type, typeChecker, currentFile) => {
     else if (type.flags & ts.TypeFlags.Any) {
         return Type$GleamDynamic();
     }
+    else if (type.flags & ts.TypeFlags.TypeParameter) {
+        const symbol = type.getSymbol();
+        const name = symbol?.name ?? "t";
+        return Type$TypeVariable(name.toLowerCase());
+    }
     else if (type.flags & ts.TypeFlags.Object) {
         const objectType = type;
         if (typeChecker.isTupleType(type)) {
@@ -95,7 +100,7 @@ const resolve_type = (type, typeChecker, currentFile) => {
             return Type$GleamFunction(parameters, return_type);
         }
     }
-    return Type$OpaqueExternal(type_string);
+    return Type$OpaqueExternal(format_type_name(type_string), type_arguments);
 };
 export const resolve_external_functions = (filepath) => {
     const configPath = ts.findConfigFile(process.cwd(), ts.sys.fileExists, "tsconfig.json");

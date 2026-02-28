@@ -33,7 +33,8 @@ pub type Type {
     name: String,
     type_arguments: Array(Type),
   )
-  OpaqueExternal(name: String)
+  OpaqueExternal(name: String, type_arguments: Array(Type))
+  TypeVariable(name: String)
 }
 
 @internal
@@ -227,7 +228,7 @@ pub fn module_to_string(generated_module: GeneratedModule) -> String {
 
   let type_declarations =
     set.fold(generated_module.external_types, "", fn(accumulator, current) {
-      accumulator <> "pub type " <> format_type_name(current) <> "\n"
+      accumulator <> "pub type " <> current <> "\n"
     })
 
   let external_declarations =
@@ -302,7 +303,14 @@ pub fn generate_module(
       let external_types =
         list.filter_map(all_types, fn(type_item) {
           case type_item {
-            OpaqueExternal(name:) -> Ok(name)
+            OpaqueExternal(name:, type_arguments:) -> {
+              let formatted_name = format_type_name(name)
+              let arity = array.size(type_arguments)
+              case arity {
+                0 -> Ok(formatted_name)
+                n -> Ok(formatted_name <> "(" <> type_param_letters(n) <> ")")
+              }
+            }
             _ -> Error(Nil)
           }
         })
@@ -384,6 +392,12 @@ fn expand_types(input: List(Type), accumulator: List(Type)) -> List(Type) {
             ..accumulator
           ])
         }
+        OpaqueExternal(name: _, type_arguments:) -> {
+          expand_types(list.append(array.to_list(type_arguments), rest), [
+            current,
+            ..accumulator
+          ])
+        }
         _ -> expand_types(rest, [current, ..accumulator])
       }
     }
@@ -442,7 +456,18 @@ fn build_type_definition(input: Type) -> String {
       <> ") -> "
       <> build_type_definition(return_type)
     }
-    OpaqueExternal(name:) -> format_type_name(name)
+    OpaqueExternal(name:, type_arguments:) -> {
+      let arguments = array.to_list(type_arguments)
+      case arguments {
+        [] -> format_type_name(name)
+        _ ->
+          format_type_name(name)
+          <> "("
+          <> list.map(arguments, build_type_definition) |> string.join(", ")
+          <> ")"
+      }
+    }
+    TypeVariable(name:) -> name
   }
 }
 
@@ -485,6 +510,11 @@ fn format_parameter_name(name) {
 
 fn format_type_name(name) {
   justin.pascal_case(name)
+}
+
+fn type_param_letters(n: Int) -> String {
+  let letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+  list.take(letters, n) |> string.join(", ")
 }
 
 @external(javascript, "./ffig_ffi.mjs", "resolve_external_functions")

@@ -96,3 +96,18 @@ export const addSomeHandler = (channel, callback) => {
         callback(new CustomEvent("newsflash"));
     }
 };
+class MutableObject {
+    obj;
+    constructor(obj) {
+        this.obj = obj;
+    }
+    update(new_object) {
+        this.obj = new_object;
+    }
+    get() {
+        return this.obj;
+    }
+}
+export const create_mutable = (item) => new MutableObject(item);
+export const update_mutable = (mutable, new_item) => mutable.update(new_item);
+export const get_mutable_value = (mutable) => mutable.get();

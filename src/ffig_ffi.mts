@@ -17,6 +17,7 @@ import {
   Type$JavaScriptPromise,
   Type$OpaqueExternal,
   Type$GleamFunction,
+  Type$TypeVariable,
   ExecutionError$SourceFileNotFound,
 } from "./ffig.mjs";
 import { Result$Ok, Result$Error, type Result } from "./gleam.mjs";
@@ -95,6 +96,10 @@ const resolve_type = (
     return Type$GleamDynamic();
   } else if (type.flags & ts.TypeFlags.Any) {
     return Type$GleamDynamic();
+  } else if (type.flags & ts.TypeFlags.TypeParameter) {
+    const symbol = type.getSymbol();
+    const name = symbol?.name ?? "t";
+    return Type$TypeVariable(name.toLowerCase());
   } else if (type.flags & ts.TypeFlags.Object) {
     const objectType = type as ts.ObjectType;
 
@@ -141,7 +146,7 @@ const resolve_type = (
       return Type$GleamFunction(parameters, return_type);
     }
   }
-  return Type$OpaqueExternal(type_string);
+  return Type$OpaqueExternal(format_type_name(type_string), type_arguments);
 };
 
 export const resolve_external_functions = (

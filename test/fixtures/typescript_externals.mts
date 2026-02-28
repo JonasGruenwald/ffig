@@ -145,3 +145,22 @@ export const addSomeHandler = (
     callback(new CustomEvent("newsflash"));
   }
 };
+
+class MutableObject<T> {
+  private obj: T;
+  constructor(obj: T) {
+    this.obj = obj;
+  }
+  public update(new_object: T) {
+    this.obj = new_object;
+  }
+  public get() {
+    return this.obj;
+  }
+}
+
+export const create_mutable = <T,>(item: T) => new MutableObject(item);
+export const update_mutable = <T,>(mutable: MutableObject<T>, new_item: T) =>
+  mutable.update(new_item);
+export const get_mutable_value = <T,>(mutable: MutableObject<T>) =>
+  mutable.get();

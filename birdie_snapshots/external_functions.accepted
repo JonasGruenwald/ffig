@@ -88,7 +88,7 @@ test_name: resolve_external_functions_test
   ExternalFunction(
     "getClass",
     #(),
-    OpaqueExternal("MyClass"),
+    OpaqueExternal("MyClass", #()),
     Error(Nil),
   ),
   ExternalFunction(
@@ -169,7 +169,10 @@ test_name: resolve_external_functions_test
   ExternalFunction(
     "getMyType",
     #(),
-    OpaqueExternal("MyJavaScriptType"),
+    OpaqueExternal(
+      "MyJavaScriptType",
+      #(),
+    ),
     Error(Nil),
   ),
   ExternalFunction(
@@ -181,7 +184,7 @@ test_name: resolve_external_functions_test
   ExternalFunction(
     "neverReturn",
     #(),
-    OpaqueExternal("never"),
+    OpaqueExternal("never", #()),
     Error(Nil),
   ),
   ExternalFunction(
@@ -205,7 +208,7 @@ test_name: resolve_external_functions_test
   ExternalFunction(
     "returnObject",
     #(),
-    OpaqueExternal("Object"),
+    OpaqueExternal("Object", #()),
     Error(Nil),
   ),
   ExternalFunction(
@@ -224,7 +227,10 @@ test_name: resolve_external_functions_test
           #(
             Parameter(
               "event",
-              OpaqueExternal("Event"),
+              OpaqueExternal(
+                "Event",
+                #(),
+              ),
             ),
           ),
           GleamNil,
@@ -232,6 +238,52 @@ test_name: resolve_external_functions_test
       ),
     ),
     GleamNil,
+    Error(Nil),
+  ),
+  ExternalFunction(
+    "create_mutable",
+    #(
+      Parameter(
+        "item",
+        TypeVariable("t"),
+      ),
+    ),
+    OpaqueExternal(
+      "MutableObject",
+      #(TypeVariable("t")),
+    ),
+    Error(Nil),
+  ),
+  ExternalFunction(
+    "update_mutable",
+    #(
+      Parameter(
+        "mutable",
+        OpaqueExternal(
+          "MutableObject",
+          #(TypeVariable("t")),
+        ),
+      ),
+      Parameter(
+        "new_item",
+        TypeVariable("t"),
+      ),
+    ),
+    GleamNil,
+    Error(Nil),
+  ),
+  ExternalFunction(
+    "get_mutable_value",
+    #(
+      Parameter(
+        "mutable",
+        OpaqueExternal(
+          "MutableObject",
+          #(TypeVariable("t")),
+        ),
+      ),
+    ),
+    TypeVariable("t"),
     Error(Nil),
   ),
 )
